@@ -14,7 +14,7 @@ if (!location || location.trim() === '') {
             return console.log(error);
         }
     
-        getWeather({...locationData}, (error, weatherData=undefined) => {
+        getWeather(locationData, (error, weatherData=undefined) => {
             if (error) {
                 return console.log(error);
             }

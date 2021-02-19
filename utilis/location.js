@@ -10,38 +10,33 @@ const getLocation = (location, callback) => {
         limit: 'limit=1'
     };
 
-    const geoUrl = `${geoPrams.api}${geoPrams.location}${geoPrams.key}&${geoPrams.limit}`;
+    const url = `${geoPrams.api}${geoPrams.location}${geoPrams.key}&${geoPrams.limit}`;
 
-    request({url: geoUrl, json: true}, (err, resp) => {
+    request({url, json: true}, (err, { body: data }) => {
 
         if (err) {
             return callback('Unable to connect to location services!');
         }
 
-        if (resp) {
+        if (data.message || data.features.length === 0) {
+            return callback('Location cannot be found. Please try another search.');
+        } else {  
 
-            const data = resp.body;
-
-            if (data.message || data.features.length === 0) {
-                return callback('Location cannot be found. Please try another search.');
-            } else {  
-
-                const { features } = data;
+            const { features } = data;
+    
+            const [ dataSet ] = features;
         
-                const [ dataSet ] = features;
-            
-                const { center: cords, place_name: location } = dataSet;
-            
-                const [ long, lat ] = cords;
+            const { center: cords, place_name: location } = dataSet;
+        
+            const [ long, lat ] = cords;
 
-                const locationInfo = {
-                    location,
-                    long,
-                    lat
-                };
+            const locationInfo = {
+                location,
+                long,
+                lat
+            };
 
-                return callback(undefined, locationInfo);
-            }
+            return callback(undefined, locationInfo);
         }
     });
 };

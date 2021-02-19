@@ -14,40 +14,37 @@ const getWeather = ({location, long, lat}, callback) => {
         fahrenheit: 'units=f'
     };
 
-    const weatherUrl = `${weatherParams.api}?${weatherParams.key}&${weatherParams.locationCords}&${weatherParams.fahrenheit}`;
+    const url = `${weatherParams.api}?${weatherParams.key}&${weatherParams.locationCords}&${weatherParams.fahrenheit}`;
 
-    request({url: weatherUrl, json: true}, (err, resp) => {
+    request({url, json: true}, (err, { body: data }) => {
     
         if (err) {
-            return callback('Unable to connect to weather service at this time.');
+            return callback('Unable to connect to weather service at this time.');        
         } 
-        
-        if (resp) {
-            const data = resp.body;
-    
-            if (data.error) {
-                const { error } = data;
-    
-                return callback(error.info);
-            } else {
-                const currentWeather = data.current;
-        
-                const { weather_descriptions: descriptions, temperature: temp,  feelslike,  precip } = currentWeather;
-            
-                let [des_1, des_2] = descriptions;
-            
-                let percipPercent = convertPercent(precip);
 
-                const weather = {
-                    temp,
-                    feelslike,
-                    percipPercent,
-                    des_1
-                };
+        if (data.error) {
+            const { error } = data;
 
-                return callback(undefined, weather);        
-            }
-        }        
+            return callback(error.info);
+        } else {
+            const { current: currentWeather } = data;
+    
+            const { weather_descriptions: descriptions, temperature: temp,  feelslike,  precip } = currentWeather;
+        
+            let [des_1, des_2] = descriptions;
+        
+            let percipPercent = convertPercent(precip);
+
+            const weather = {
+                temp,
+                feelslike,
+                percipPercent,
+                des_1,
+                des_2
+            };
+
+            return callback(undefined, weather);        
+        }       
     });
 };
 
