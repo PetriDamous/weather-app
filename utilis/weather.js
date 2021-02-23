@@ -1,12 +1,13 @@
 const { convertPercent } = require('./utility_functions');
 const request = require('postman-request');
+const { weatherStack } = require('../secret');
 
 // Weather API
 const getWeather = ({location, long, lat}, callback) => {
 
     const weatherParams = {
         api: 'http://api.weatherstack.com/current',
-        key: 'access_key=af0fe09a1dc5cdbfa0dc5b2ea99e03a5',
+        key: `access_key=${weatherStack}`,
         locationName: `query=${encodeURIComponent(location)}`,
         locationCords: `query=${encodeURIComponent(lat)},${encodeURIComponent(long)}`,
         metric: 'units=m',

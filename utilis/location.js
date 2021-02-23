@@ -1,11 +1,12 @@
 const request = require('postman-request');
+const {mapBox} = require('../secret');
 
 // Geo Location API
 const getLocation = (location, callback) => {
 
     const geoPrams = {
         api: 'https://api.mapbox.com/geocoding/v5/mapbox.places/',    
-        key: 'access_token=pk.eyJ1IjoicGV0cmlkIiwiYSI6ImNrbDlyeGRodjAzdjUyb3BjaWNkcjlmZXcifQ.IYVRfuu2SfnDxashv4zWGQ',
+        key: `access_token=${mapBox}`,
         location: `${encodeURIComponent(location)}.json?`,
         limit: 'limit=1'
     };

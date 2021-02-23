@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/dwilliams64/weather-app#readme",
   "dependencies": {
+    "express": "^4.17.1",
     "postman-request": "^2.88.1-postman.28"
   }
 }
